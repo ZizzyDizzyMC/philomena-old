@@ -17,7 +17,7 @@ defmodule PhilomenaWeb.ImageView do
 
   def render_intent(conn, image, size) do
     uris = thumb_urls(image, can?(conn, :show, image))
-    vid? = image.image_mime_type == "video/webm"
+    vid? = image.image_mime_type == "video/webm" || image.image_mime_type == "video/mp4"
     gif? = image.image_mime_type == "image/gif"
     alt = title_text(image)
 

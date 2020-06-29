@@ -34,6 +34,7 @@ defmodule Philomena.Analyzers do
   def analyzer("image/png"), do: {:ok, Png}
   def analyzer("image/svg+xml"), do: {:ok, Svg}
   def analyzer("video/webm"), do: {:ok, Webm}
+  def analyzer("video/mp4"), do: {:ok, Mp4}
   def analyzer(_content_type), do: :error
 
   @doc """
