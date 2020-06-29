@@ -4,7 +4,8 @@
       "description": "The site's default filter.",
       "hidden": [
         "explicit",
-        "grotesque"
+        "grotesque",
+        "furry"
       ],
       "spoilered": [
         "questionable"
@@ -13,7 +14,9 @@
     {
       "name": "Everything",
       "description": "This filter won't filter out anything at all.",
-      "hidden": [],
+      "hidden": [
+        "furry"
+        ],
       "spoilered": []
     }
   ],

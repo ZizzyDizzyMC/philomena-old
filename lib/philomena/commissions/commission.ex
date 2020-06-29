@@ -61,6 +61,7 @@ defmodule Philomena.Commissions.Commission do
       "Original Characters": "Original Characters",
       "Original Species": "Original Species",
       Pony: "Pony",
+      Furry: "Furry",
       Requests: "Requests",
       Safe: "Safe",
       Shipping: "Shipping",
