@@ -40,7 +40,7 @@ defmodule PhilomenaWeb.ImageView do
         {:image, String.replace(uris[size], ".webm", ".gif"), alt}
 
       true ->
-        {:video, uris[size], String.replace(uris[size], ".webm"), alt}
+        {:video, uris[size], String.replace(uris[size], ".webm", ".mp4"), alt}
     end
   end
 
