@@ -7,7 +7,7 @@ defmodule Philomena.Processors.Mp4 do
     duration = analysis.duration
     preview = preview(duration, file)
     palette = gif_palette(file, duration)
-    mp4 = scale_mp4_only(file, dimensions, dimensions)
+    webm = scale_webm_only(file, dimensions, dimensions)
 
     {:ok, intensities} = Intensities.file(preview)
 
@@ -135,9 +135,9 @@ defmodule Philomena.Processors.Mp4 do
     {webm, mp4}
   end
 
-  defp scale_mp4_only(file, dimensions, target_dimensions) do
+  defp scale_webm_only(file, dimensions, target_dimensions) do
     {width, height} = box_dimensions(dimensions, target_dimensions)
-    mp4 = Briefly.create!(extname: ".mp4")
+    webm = Briefly.create!(extname: ".webm")
     scale_filter = "scale=w=#{width}:h=#{height}"
 
     {_output, 0} =
@@ -148,27 +148,31 @@ defmodule Philomena.Processors.Mp4 do
         "-i",
         file,
         "-c:v",
-        "libx264",
-        "-pix_fmt",
-        "yuv420p",
-        "-profile:v",
-        "main",
-        "-preset",
-        "medium",
+        "libvpx",
+        "-deadline",
+        "good",
+        "-cpu-used",
+        "5",
+        "-auto-alt-ref",
+        "0",
+        "-qmin",
+        "15",
+        "-qmax",
+        "35",
         "-crf",
-        "18",
-        "-b:v",
-        "5M",
+        "31",
         "-vf",
         scale_filter,
         "-threads",
         "4",
         "-max_muxing_queue_size",
         "4096",
-        mp4
+        "-slices",
+        "8",
+        webm
       ])
 
-    mp4
+    webm
   end
 
   defp scale_gif(file, palette, duration, {width, height}) do
