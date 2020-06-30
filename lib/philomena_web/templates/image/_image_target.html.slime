@@ -22,7 +22,7 @@
         span.imgspoiler
           - thumb_url = thumb_url(@image, can?(@conn, :show, @image), size)
 
-          = if @image.image_mime_type == "video/mp4" do
+          = if @image.image_mime_type == "video/webm" || @image.image_mime_type == "video/mp4" do
             video data-image-id=@image.id autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline"
               source src=thumb_url type="video/webm"
               source src=String.replace(thumb_url, ".webm", ".mp4") type="video/mp4"
