@@ -12,7 +12,7 @@ defmodule Philomena.Processors.Mp4 do
     {:ok, intensities} = Intensities.file(preview)
 
     scaled =
-      Enum.flat_map(versions, &scale_if_smaller(file, mp4, palette, duration, dimensions, &1))
+      Enum.flat_map(versions, &scale_if_smaller(file, webm, palette, duration, dimensions, &1))
 
     %{
       intensities: intensities,
