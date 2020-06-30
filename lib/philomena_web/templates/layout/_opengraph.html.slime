@@ -27,7 +27,12 @@ meta name="format-detection" content="telephone=no"
       meta property="og:type" content="video.other"
       meta property="og:image" content=ImageView.thumb_url(image, false, :rendered)
       meta property="og:video" content=ImageView.thumb_url(image, false, :large)
-
+	
+	- image.image_mime_type == "video/mp4" and not filtered ->
+      meta property="og:type" content="video.other"
+      meta property="og:image" content=ImageView.thumb_url(image, false, :rendered)
+      meta property="og:video" content=ImageView.thumb_url(image, false, :large)
+	
     - image.image_mime_type == "image/svg+xml" and not filtered ->
       meta property="og:type" content="website"
       meta property="og:image" content=ImageView.thumb_url(image, false, :rendered)
