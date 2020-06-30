@@ -35,7 +35,7 @@ defmodule Philomena.Processors.Mp4 do
     preview
   end
 
-  defp scale_if_smaller(_file, mp4, _palette, _duration, _dimensions, {:full, _target_dim}) do
+  defp scale_if_smaller(_file, webm, _palette, _duration, _dimensions, {:full, _target_dim}) do
     [
       {:symlink_original, "full.mp4"},
       {:copy, webm, "full.webm"}
@@ -44,7 +44,7 @@ defmodule Philomena.Processors.Mp4 do
 
   defp scale_if_smaller(
          file,
-         mp4,
+         webm,
          palette,
          duration,
          {width, height},
