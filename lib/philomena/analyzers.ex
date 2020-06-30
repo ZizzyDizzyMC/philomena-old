@@ -10,6 +10,7 @@ defmodule Philomena.Analyzers do
   alias Philomena.Analyzers.Png
   alias Philomena.Analyzers.Svg
   alias Philomena.Analyzers.Webm
+  alias Philomena.Analyzers.Mp4
 
   @doc """
   Returns an {:ok, analyzer} tuple, with the analyzer being a module capable
