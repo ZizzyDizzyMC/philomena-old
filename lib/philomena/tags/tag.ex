@@ -10,7 +10,6 @@ defmodule Philomena.Tags.Tag do
 
   @namespaces [
     "artist",
-    "musician",
     "art pack",
     "ask",
     "blog",
@@ -25,14 +24,14 @@ defmodule Philomena.Tags.Tag do
     "series",
     "species",
     "spoiler",
-    "video"
+    "video",
+    "musician"
   ]
 
   @namespace_categories %{
     "artist" => "origin",
     "art pack" => "content-fanmade",
     "colorist" => "origin",
-    "musician" => "origin",
     "comic" => "content-fanmade",
     "editor" => "origin",
     "fanfic" => "content-fanmade",
@@ -40,7 +39,8 @@ defmodule Philomena.Tags.Tag do
     "photographer" => "origin",
     "series" => "content-fanmade",
     "spoiler" => "spoiler",
-    "video" => "content-fanmade"
+    "video" => "content-fanmade",
+    "musician" => "origin"
   }
 
   @derive {Phoenix.Param, key: :slug}
