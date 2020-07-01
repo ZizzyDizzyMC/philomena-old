@@ -80,8 +80,8 @@ function pickAndResize(elem) {
     elem.insertAdjacentHTML('afterbegin',
       `<video controls autoplay loop muted playsinline preload="auto" id="image-display"
            width="${imageWidth}" height="${imageHeight}">
-        <source src="${uri}.mp4" type="video/mp4">
-        <source src="${uri}.webm" type="video/webm">
+        <source src="${uri}" type="video/mp4">
+        <source src="${uri.replace(/mp4$/, 'webm')}" type="video/webm">
         <p class="block block--fixed block--warning">
           Your browser supports neither MP4/H264 nor
           WebM/VP8! Please update it to the latest version.
