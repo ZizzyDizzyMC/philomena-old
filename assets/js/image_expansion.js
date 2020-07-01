@@ -61,7 +61,7 @@ function pickAndResize(elem) {
   const uri = uris[version];
   let imageFormat = /\.(\w+?)$/.exec(uri)[1];
 
-  if (version === 'full' && store.get('serve_webm') && Boolean(uris.mp4)) {
+  if (version === 'full' && imageFormat !== 'gif' && store.get('serve_webm') && Boolean(uris.mp4)) {
     imageFormat = 'mp4';
   }
 
