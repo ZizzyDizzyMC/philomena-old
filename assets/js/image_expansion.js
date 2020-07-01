@@ -47,6 +47,7 @@ function selectVersion(imageWidth, imageHeight) {
  * Given a target container element, chooses and scales an image
  * to an appropriate dimension.
  */
+ /**
 function pickAndResize(elem) {
   const imageWidth = parseInt(elem.getAttribute('data-width'), 10),
         imageHeight = parseInt(elem.getAttribute('data-height'), 10),
@@ -125,6 +126,90 @@ function pickAndResize(elem) {
     elem.insertAdjacentHTML('afterbegin', image);
   }
 }
+**/
+
+/**
+ * Given a target container element, chooses and scales an image
+ * to an appropriate dimension.
+ */
+function pickAndResize(elem) {
+  const { width, height, scaled, uris } = elem.dataset;
+  const imageWidth   = parseInt(width, 10);
+  const imageHeight  = parseInt(height, 10);
+  const parsedUris   = JSON.parse(uris);
+
+  const version = scaled === 'true' ? selectVersion(imageWidth, imageHeight) : 'full';
+  const uri = parsedUris[version];
+  const imageFormat = /\.(\w+?)$/.exec(uri)[1];
+
+
+  function videoMarkup(webm, mp4) {
+    return (
+      `<video controls autoplay loop muted playsinline preload="auto" id="image-display">` +
+        `<source src="${webm}" type="video/webm">` +
+        `<source src="${mp4}" type="video/mp4">` +
+        `<p class="block block--fixed block--warning">` +
+          `Your browser supports neither H.264 nor VP8! Please update it to the latest version.` +
+        `</p>` +
+      `</video>`
+    );
+  }
+
+  function imageMarkup(uri) {
+    return `<picture><img id="image-display src="${uri}"></picture>`;
+  }
+
+  function insertVideoPreview(elem, webm, mp4) {
+    // First, check if we need to change at all
+    for (const sourceUrl of elem.querySelectorAll('video source')) {
+      if (sourceUrl.src.endsWith(webm) || sourceUrl.src.endsWidth(mp4)) return;
+    }
+    
+    // Scrub out old element
+    clearEl(elem);
+    elem.insertAdjacentHTML('afterbegin', videoMarkup(webm, mp4));
+  }
+
+  function insertImagePreview(elem, uri) {
+    // Check if we need to change
+    const imageMarkup = imageMarkup(uri);
+    if (elem.innerHTML === imageMarkup) return;
+
+    clearEl(elem);
+    elem.insertAdjacentHTML('afterbegin', imageMarkup);
+  }
+
+  function applyScaleModifier(elem, scaled, querySelector) {
+    const media = elem.querySelector(querySelector);
+
+    if (scaled === 'true') {
+      media.className = 'image-scaled';
+    }
+    else if (scaled === 'partscaled') {
+      media.className = 'image-partscaled';
+    }
+  }
+
+
+  if (version === 'full' && imageFormat === 'gif' && store.get('serve_webm') && Boolean(uris.mp4)) {
+    // GIF (as video preview)
+    insertVideoPreview(elem, uri.replace(/gif$/, 'webm'), uri.replace(/gif$/, 'mp4'));
+    applyScaleModifier(elem, scaled, 'video');
+  }
+  else if (imageFormat === 'mp4') {
+    insertVideoPreview(elem, uri.replace(/mp4$/, 'webm'), mp4);
+    applyScaleModifier(elem, scaled, 'video');
+  }
+  else if (imageFormat === 'webm') {
+    insertVideoPreview(elem, uri, uri.replace(/webm$/, 'mp4'));
+    applyScaleModifier(elem, scaled, 'video');
+  }
+  else {
+    insertImagePreview(elem, uri);
+    applyScaleModifier(elem, scaled, 'picture');
+  }
+}
+
 
 /**
  * Bind an event to an image container for updating an image on
