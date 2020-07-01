@@ -77,7 +77,7 @@ function pickAndResize(elem) {
   }
 
   if (imageFormat === 'mp4') {
-    //elem.classList.add('full-height');
+    elem.classList.add('full-height');
     elem.insertAdjacentHTML('afterbegin',
       `<video controls autoplay loop muted playsinline preload="auto" id="image-display">
         <source src="${uri}" type="video/mp4">
