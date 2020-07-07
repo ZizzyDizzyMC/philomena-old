@@ -54,6 +54,10 @@ const textileSyntax = {
     action: wrapSelection,
     options: { prefix: '[==', suffix: '==]' }
   },
+  details: {
+    action: wrapSelection,
+    options: { prefix: '[details=""]', suffix: '[/details]', shortcutKey: 'm' }
+  },
 };
 
 function getSelections(textarea) {
