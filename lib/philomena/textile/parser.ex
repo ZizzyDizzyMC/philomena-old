@@ -295,33 +295,54 @@ defmodule Philomena.Textile.Parser do
   end
 
   #
-  # bq_cite_text = (?!bq_cite_open);
+  # start_middle_text = (?!bq_cite_open);
   #
 
   # Note that text is not escaped here because it will be escaped
   # when the tree is flattened
-  defp bq_cite_text(_parser, [{:bq_cite_open, _open} | _rest]) do
-    {:error, "Expected cite tokens"}
+  defp start_middle_text(_parser, [{:bb_with_param_open, _open} | _rest]) do
+    {:error, "Expected start middle tokens"}
   end
 
-  defp bq_cite_text(_parser, [{:char, lit} | r_tokens]) do
+  defp start_middle_text(_parser, [{:char, lit} | r_tokens]) do
     {:ok, [{:text, <<lit::utf8>>}], r_tokens}
   end
 
-  defp bq_cite_text(_parser, [{:quicktxt, lit} | r_tokens]) do
+  defp start_middle_text(_parser, [{:quicktxt, lit} | r_tokens]) do
     {:ok, [{:text, <<lit::utf8>>}], r_tokens}
   end
 
-  defp bq_cite_text(_parser, [{:space, _} | r_tokens]) do
+  defp start_middle_text(_parser, [{:space, _} | r_tokens]) do
     {:ok, [{:text, " "}], r_tokens}
   end
 
-  defp bq_cite_text(_parser, [{_token, t} | r_tokens]) do
+  defp start_middle_text(_parser, [{_token, t} | r_tokens]) do
     {:ok, [{:text, t}], r_tokens}
   end
 
-  defp bq_cite_text(_parser, _tokens) do
-    {:error, "Expected cite tokens"}
+  defp start_middle_text(_parser, _tokens) do
+    {:error, "Expected start middle tokens"}
+  end
+
+  defp bb_with_param_starts() do
+    Map.keys(bb_with_param_values())
+  end
+
+  defp bb_with_param_values() do
+    %{
+      :bq_cite_start => %{
+        :start => "<blockquote author=\"",
+        :middle => "\">",
+        :end => "</blockquote>",
+        :closing_token => :bq_close
+      },
+      :details_named_start => %{
+        :start => "<details><summary>",
+        :middle => "</summary>",
+        :end => "</details>",
+        :closing_token => :details_close
+      }
+    }
   end
 
   #
@@ -370,20 +391,23 @@ defmodule Philomena.Textile.Parser do
     {:ok, [{:text, escape(<<lit::utf8>>)}], r_tokens}
   end
 
-  defp inline_textile_element_not_opening_markup(parser, [{:bq_cite_start, start} | r_tokens]) do
-    case repeat(&bq_cite_text/2, parser, r_tokens) do
-      {:ok, tree, [{:bq_cite_open, open} | r2_tokens]} ->
+  defp inline_textile_element_not_opening_markup(parser, [{start_token_id, start} | r_tokens])
+       when start_token_id in [:bq_cite_start, :details_named_start] do
+    case repeat(&start_middle_text/2, parser, r_tokens) do
+      {:ok, tree, [{:bb_with_param_open, open} | r2_tokens]} ->
+        value_params = bb_with_param_values()[start_token_id]
+        closing_token = value_params.closing_token
         case repeat(&block_textile_element/2, parser, r2_tokens) do
-          {:ok, tree2, [{:bq_close, _} | r3_tokens]} ->
-            cite = escape(flatten(tree))
+          {:ok, tree2, [{^closing_token, _} | r3_tokens]} ->
+            parameter = escape(flatten(tree))
 
             {:ok,
              [
-               {:markup, "<blockquote author=\""},
-               {:markup, cite},
-               {:markup, "\">"},
+               {:markup, value_params.start},
+               {:markup, parameter},
+               {:markup, value_params.middle},
                tree2,
-               {:markup, "</blockquote>"}
+               {:markup, value_params.end}
              ], r3_tokens}
 
           {:ok, tree2, r3_tokens} ->
@@ -405,49 +429,14 @@ defmodule Philomena.Textile.Parser do
     end
   end
 
-  defp inline_textile_element_not_opening_markup(_parser, [{:bq_cite_open, tok} | r_tokens]) do
+  defp inline_textile_element_not_opening_markup(_parser, [{:bb_with_param_open, tok} | r_tokens]) do
     {:ok, [{:text, escape(tok)}], r_tokens}
-  end
-
-  defp inline_textile_element_not_opening_markup(parser, [{:details_named_start, start} | r_tokens]) do
-    case repeat(&bq_cite_text/2, parser, r_tokens) do
-      {:ok, tree, [{:bq_cite_open, open} | r2_tokens]} ->
-        case repeat(&block_textile_element/2, parser, r2_tokens) do
-          {:ok, tree2, [{:details_close, _} | r3_tokens]} ->
-            name = escape(flatten(tree))
-
-            {:ok,
-             [
-               {:markup, "<details><summary>"},
-               {:markup, name},
-               {:markup, "</summary>"},
-               tree2,
-               {:markup, "</details>"}
-             ], r3_tokens}
-
-          {:ok, tree2, r3_tokens} ->
-            {:ok,
-             [
-               {:text, escape(start)},
-               {:text, escape(flatten(tree))},
-               {:text, escape(open)},
-               tree2
-             ], r3_tokens}
-
-          _ ->
-            {:ok, [{:text, escape(start)}, {:text, escape(flatten(tree))}, {:text, escape(open)}],
-             r_tokens}
-        end
-
-      _ ->
-        {:ok, [{:text, escape(start)}], r_tokens}
-    end
   end
 
   defp inline_textile_element_not_opening_markup(parser, tokens) do
     [
       {:bq_open, :bq_close, "<blockquote>", "</blockquote>"},
-      {:details_open, :details_close, "<details>", "</details>"},
+      {:details_open, :details_close, "<details><summary>Details</summary>", "</details>"},
       {:spoiler_open, :spoiler_close, "<span class=\"spoiler\">", "</span>"},
       {:bracketed_b_open, :bracketed_b_close, "<b>", "</b>"},
       {:bracketed_i_open, :bracketed_i_close, "<i>", "</i>"},

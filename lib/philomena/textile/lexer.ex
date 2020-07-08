@@ -57,9 +57,9 @@ defmodule Philomena.Textile.Lexer do
     string("[bq=\"")
     |> unwrap_and_tag(:bq_cite_start)
 
-  bq_cite_open =
+  bb_with_param_open =
     string("\"]")
-    |> unwrap_and_tag(:bq_cite_open)
+    |> unwrap_and_tag(:bb_with_param_open)
 
   bq_open =
     string("[bq]")
@@ -209,7 +209,7 @@ defmodule Philomena.Textile.Lexer do
       newline,
       space_token,
       bq_cite_start,
-      bq_cite_open,
+      bb_with_param_open,
       bq_open,
       bq_close,
       details_named_start,
