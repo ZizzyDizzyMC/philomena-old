@@ -409,9 +409,45 @@ defmodule Philomena.Textile.Parser do
     {:ok, [{:text, escape(tok)}], r_tokens}
   end
 
+  defp inline_textile_element_not_opening_markup(parser, [{:details_named_start, start} | r_tokens]) do
+    case repeat(&bq_cite_text/2, parser, r_tokens) do
+      {:ok, tree, [{:bq_cite_open, open} | r2_tokens]} ->
+        case repeat(&block_textile_element/2, parser, r2_tokens) do
+          {:ok, tree2, [{:details_close, _} | r3_tokens]} ->
+            name = escape(flatten(tree))
+
+            {:ok,
+             [
+               {:markup, "<details><summary>"},
+               {:markup, name},
+               {:markup, "</summary>"},
+               tree2,
+               {:markup, "</details>"}
+             ], r3_tokens}
+
+          {:ok, tree2, r3_tokens} ->
+            {:ok,
+             [
+               {:text, escape(start)},
+               {:text, escape(flatten(tree))},
+               {:text, escape(open)},
+               tree2
+             ], r3_tokens}
+
+          _ ->
+            {:ok, [{:text, escape(start)}, {:text, escape(flatten(tree))}, {:text, escape(open)}],
+             r_tokens}
+        end
+
+      _ ->
+        {:ok, [{:text, escape(start)}], r_tokens}
+    end
+  end
+
   defp inline_textile_element_not_opening_markup(parser, tokens) do
     [
       {:bq_open, :bq_close, "<blockquote>", "</blockquote>"},
+      {:details_open, :details_close, "<details>", "</details>"},
       {:spoiler_open, :spoiler_close, "<span class=\"spoiler\">", "</span>"},
       {:bracketed_b_open, :bracketed_b_close, "<b>", "</b>"},
       {:bracketed_i_open, :bracketed_i_close, "<i>", "</i>"},
