@@ -40,7 +40,7 @@
   "Help & Information": [
     {
       "title": "Changelog",
-      "url": "https://github.com/ZizzyDizzyMC/philomena/commits/master",
+      "url": "https://github.com/G0ld-Asp3ct/irledarin/commits/master",
       "bold": true
     },
     {
@@ -87,10 +87,6 @@
     {
       "title": "About",
       "url": "/pages/about"
-    },
-    {
-      "title": "Twitter",
-      "url": "https://twitter.com/Ponybooru"
     }
   ]
 }
