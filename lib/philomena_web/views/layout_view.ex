@@ -75,7 +75,7 @@ defmodule PhilomenaWeb.LayoutView do
   def stylesheet_path(conn, %{theme: "olddefault"}),
     do: Routes.static_path(conn, "/css/olddefault.css")
     
-  def stylesheet_path(conn, %({theme: "fancy"}),
+  def stylesheet_path(conn, %{theme: "fancy"}),
     do: Routes.static_path(conn, "/css/fancy.css")
     
   def stylesheet_path(conn, _user),
