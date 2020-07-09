@@ -1,4 +1,5 @@
 # Irledarin
+free Imageboard software, forked from philomena
 
 ## Getting started
 On systems with `docker` and `docker-compose` installed, the process should be as simple as:
