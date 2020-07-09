@@ -22,14 +22,14 @@
   ],
   "forums": [{
       "name": "General Discussion",
-      "short_name": "dis",
-      "description": "This is a discussion forum for everything unrelated to the show or other forums",
+      "short_name": "gen-dis",
+      "description": "This is a discussion forum for everything unrelated to the forum or topics",
       "access_level": "normal"
     },
     {
-      "name": "Episode Discussion",
-      "short_name": "pony",
-      "description": "Discuss the show, characters, and theories",
+      "name": "Discussion",
+      "short_name": "disc",
+      "description": "Discuss explicit topics",
       "access_level": "normal"
     },
     {
@@ -66,8 +66,8 @@
   "users": [{
     "name": "Administrator",
     "email": "admin@example.com",
-    "password": "trixieisbestpony",
-    "password_confirmation": "trixieisbestpony",
+    "password": "justamagicalwizard",
+    "password_confirmation": "justamagicalwizard",
     "role": "admin"
   }],
   "rating_tags": [
