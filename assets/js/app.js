@@ -20,3 +20,4 @@ import '../css/themes/default.scss';
 import '../css/themes/dark.scss';
 import '../css/themes/red.scss';
 import '../css/themes/olddefault.scss';
+import '../css/themes/fancy.scss';
