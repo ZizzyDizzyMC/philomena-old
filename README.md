@@ -1,5 +1,5 @@
-# Philomena
-![Philomena](/assets/static/images/phoenix.svg)
+# Irledarin
+![Irledarin]
 
 ## Getting started
 On systems with `docker` and `docker-compose` installed, the process should be as simple as:
@@ -16,7 +16,7 @@ podman-compose build
 podman-compose up
 ```
 
-Once the application has started, navigate to http://localhost:8080 and login with admin@example.com / trixieisbestpony
+Once the application has started, navigate to http://localhost:8080 and login with admin@example.com / justamagicalwizard
 
 ## Troubleshooting
 
