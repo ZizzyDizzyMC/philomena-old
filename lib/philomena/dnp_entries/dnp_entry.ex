@@ -64,8 +64,8 @@ defmodule Philomena.DnpEntries.DnpEntry do
 
   def reasons do
     [
-      {"Artist Upload Only", "I am an artist and will be uploading my own art"},
-      {"With Permission Only", "I am an artist and have given specific people permission to upload my art."},
+      {"Artist Upload Only", "I am an artist and will be uploading my own art within 120 days of being posted elsewhere."},
+      {"With Permission Only", "I am an artist and have given specific people permission to upload my art within 120 days of being posted elsewhere."},
       {"Uploader Credit Change", "I would like the uploader credit for existing and future uploads of my art to be assigned to me."},
       {"Limited Edits", "I am an artist and would like to limit edits to things likely to fall under Fair Use (Parody, Transformative, Sufficiently different from original.)"},
       {"Separate Edits", "I am an artist and would like edits to be placed under a different artist tag."},
