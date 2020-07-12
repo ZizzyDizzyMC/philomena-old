@@ -32,3 +32,5 @@
   button.communication__toolbar__button type="button" title="Text you want the parser to ignore" data-syntax-id="noParse"
     span
       | no parse
+  button.communication__toolbar__button type="button" title="insert details (ctrl+m)" data-syntax-id="details"
+    i.fa.fa-plus-square

@@ -20,6 +20,9 @@
     ' [==stuff you don't want textile to parse==]
     br
 
+    ' [details="click to show"]hide text[/details]
+    br
+
     ins> Links:
     ' "On-site link":/some-link, "External link":http://some-link
     br

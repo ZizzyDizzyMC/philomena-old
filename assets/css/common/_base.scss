@@ -267,6 +267,28 @@ blockquote {
   margin-bottom: 6px;
 }
 
+summary {
+  cursor: pointer;
+  margin: -3px -5px 0;
+  padding: 3px 5px;
+}
+
+details[open] > summary {
+  border-bottom: 1px solid $border_color;
+  margin-bottom: 3px;
+}
+
+details[open] {
+  padding: 3px 5px;
+}
+
+details {
+  border: 1px solid $border_color;
+  box-sizing: border-box;
+  padding: 3px 5px 0;
+  border-radius: 0;
+}
+
 //donations
 .donate-button {
   background: 0;

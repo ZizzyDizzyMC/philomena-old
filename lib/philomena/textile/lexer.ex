@@ -57,9 +57,9 @@ defmodule Philomena.Textile.Lexer do
     string("[bq=\"")
     |> unwrap_and_tag(:bq_cite_start)
 
-  bq_cite_open =
+  bb_with_param_open =
     string("\"]")
-    |> unwrap_and_tag(:bq_cite_open)
+    |> unwrap_and_tag(:bb_with_param_open)
 
   bq_open =
     string("[bq]")
@@ -68,6 +68,18 @@ defmodule Philomena.Textile.Lexer do
   bq_close =
     string("[/bq]")
     |> unwrap_and_tag(:bq_close)
+
+  details_named_start =
+    string("[details=\"")
+    |> unwrap_and_tag(:details_named_start)
+
+  details_open =
+    string("[details]")
+    |> unwrap_and_tag(:details_open)
+
+  details_close =
+    string("[/details]")
+    |> unwrap_and_tag(:details_close)
 
   spoiler_open =
     string("[spoiler]")
@@ -197,9 +209,12 @@ defmodule Philomena.Textile.Lexer do
       newline,
       space_token,
       bq_cite_start,
-      bq_cite_open,
+      bb_with_param_open,
       bq_open,
       bq_close,
+      details_named_start,
+      details_open,
+      details_close,
       spoiler_open,
       spoiler_close,
       unbracketed_image,
