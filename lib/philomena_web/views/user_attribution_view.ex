@@ -4,6 +4,7 @@ defmodule PhilomenaWeb.UserAttributionView do
 
   alias Philomena.Attribution
   alias PhilomenaWeb.AvatarGeneratorView
+  alias PhilomenaWeb.AnonNameGeneratorView
 
   def anonymous?(object) do
     Attribution.anonymous?(object)
@@ -37,8 +38,12 @@ defmodule PhilomenaWeb.UserAttributionView do
 
     case not is_nil(object.user) and reveal_anon? do
       true -> "#{object.user.name} (##{hash}, hidden)"
-      false -> "Anonymous ##{hash}"
+      false -> "#{gen_anonymous_name(key)} ##{hash}"
     end
+  end
+
+  def gen_anonymous_name(key) do
+    AnonNameGeneratorView.generated_anon_name(key)
   end
 
   def anonymous_avatar(name, class \\ "avatar--100px") do
